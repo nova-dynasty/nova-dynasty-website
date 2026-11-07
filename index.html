@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nova Dynasty | Blox Fruits & Roblox Community</title>
+<meta name="description" content="Nova Dynasty: the ultimate Roblox community for Blox Fruits carries, trading, crew wars and giveaways.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { base:'#0B0E14', nova:'#A855F7', sea:'#06B6D4', fire:'#F59E0B' },
+  fontFamily: { game:['Orbitron','sans-serif'], body:['Inter','sans-serif'] }
+}}}
+</script>
+<style>
+  body{background:#0B0E14;font-family:'Inter',sans-serif}
+  .glass{background:rgba(255,255,255,.04);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(168,85,247,.2);transition:.3s}
+  .glass:hover{border-color:rgba(6,182,212,.55);box-shadow:0 0 28px rgba(168,85,247,.2)}
+  .grad-text{background:linear-gradient(90deg,#A855F7,#06B6D4,#F59E0B);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 12px rgba(168,85,247,.5))}
+  .orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.28;z-index:0;pointer-events:none;animation:float 14s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-60px)}}
+  .fruit{position:fixed;z-index:0;pointer-events:none;opacity:.18;animation:bob 9s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-30px) rotate(12deg)}}
+  .pulse-glow{animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(168,85,247,.7)}70%{box-shadow:0 0 0 16px rgba(168,85,247,0)}100%{box-shadow:0 0 0 0 rgba(168,85,247,0)}}
+  .acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .acc-item.open .acc-body{max-height:300px}
+  .acc-item.open .chev{transform:rotate(180deg)}
+  .chev{transition:.3s}
+  .tab.active{background:linear-gradient(90deg,#A855F7,#06B6D4);color:#fff;box-shadow:0 0 18px rgba(168,85,247,.5)}
+  .card-hide{display:none}
+  .reveal{opacity:0;transform:translateY(24px);transition:.7s}
+  .reveal.show{opacity:1;transform:none}
+  ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:#A855F7;border-radius:8px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body class="text-slate-200 antialiased overflow-x-hidden">
+
+<!-- Ambient background -->
+<div class="orb w-96 h-96 bg-nova top-10 -left-24"></div>
+<div class="orb w-80 h-80 bg-sea top-1/2 -right-20" style="animation-delay:-5s"></div>
+<div class="orb w-72 h-72 bg-fire bottom-0 left-1/3" style="animation-delay:-9s"></div>
+<i data-lucide="flame" class="fruit w-14 h-14 text-fire top-1/4 left-[8%]"></i>
+<i data-lucide="waves" class="fruit w-16 h-16 text-sea top-[60%] left-[4%]" style="animation-delay:-3s"></i>
+<i data-lucide="gem" class="fruit w-12 h-12 text-nova top-1/3 right-[7%]" style="animation-delay:-6s"></i>
+<i data-lucide="zap" class="fruit w-14 h-14 text-fire bottom-[12%] right-[10%]" style="animation-delay:-2s"></i>
+
+<!-- Navbar -->
+<header class="fixed top-0 inset-x-0 z-50 transition-all" id="nav">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <a href="#top" class="font-game font-extrabold text-xl sm:text-2xl grad-text flex items-center gap-2">
+      <i data-lucide="crown" class="w-6 h-6 text-fire"></i>Nova Dynasty
+    </a>
+    <nav class="hidden lg:flex items-center gap-8 text-sm font-medium">
+      <a href="#features" class="hover:text-sea transition">Features</a>
+      <a href="#trading" class="hover:text-sea transition">Blox Fruits Trading</a>
+      <a href="#rules" class="hover:text-sea transition">Server Rules</a>
+      <a href="#staff" class="hover:text-sea transition">Staff</a>
+      <a href="#faq" class="hover:text-sea transition">FAQ</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="https://discord.gg/novadynasty" target="_blank" rel="noopener" class="pulse-glow hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-nova to-sea text-white font-semibold text-sm hover:scale-105 transition">
+        <i data-lucide="message-circle" class="w-4 h-4"></i>Join Discord
+      </a>
+      <button id="menuBtn" aria-label="Menu" class="lg:hidden p-2 rounded-lg glass"><i data-lucide="menu" class="w-5 h-5"></i></button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="hidden lg:hidden glass mx-4 rounded-2xl p-4 space-y-3 text-center">
+    <a href="#features" class="block py-1">Features</a>
+    <a href="#trading" class="block py-1">Blox Fruits Trading</a>
+    <a href="#rules" class="block py-1">Server Rules</a>
+    <a href="#staff" class="block py-1">Staff</a>
+    <a href="#faq" class="block py-1">FAQ</a>
+    <a href="https://discord.gg/novadynasty" target="_blank" rel="noopener" class="block py-2 rounded-full bg-gradient-to-r from-nova to-sea font-semibold">Join Discord</a>
+  </div>
+</header>
+
+<main id="top" class="relative z-10">
+
+<!-- Hero -->
+<section class="min-h-screen flex items-center pt-24 pb-16 px-4 sm:px-6">
+  <div class="max-w-5xl mx-auto text-center">
+    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs sm:text-sm text-sea mb-6">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Sea Event hosting live in Discord
+    </span>
+    <h1 class="font-game font-extrabold text-4xl sm:text-5xl md:text-7xl leading-tight">
+      Dominate the Seas with <span class="grad-text">Nova Dynasty</span>
+    </h1>
+    <p class="mt-6 text-base sm:text-xl text-slate-400 max-w-3xl mx-auto">
+      The ultimate Roblox community for Blox Fruits fragment grinding, raid carries, trading, crew wars, and daily giveaways.
+    </p>
+    <div class="mt-9 flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="https://discord.gg/novadynasty" target="_blank" rel="noopener" class="pulse-glow inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-nova to-sea font-bold text-white shadow-[0_0_30px_rgba(168,85,247,.5)] hover:scale-105 transition">
+        <i data-lucide="swords" class="w-5 h-5"></i>Join Discord Server
+      </a>
+      <button data-copy class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass font-semibold hover:scale-105 transition">
+        <i data-lucide="copy" class="w-5 h-5 text-fire"></i>Copy Invite Link
+      </button>
+    </div>
+    <div class="mt-14 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+      <div class="glass rounded-2xl p-5"><div class="font-game text-3xl text-nova"><span data-count="5000">0</span>+</div><div class="text-sm text-slate-400 mt-1 flex justify-center gap-2 items-center"><i data-lucide="users" class="w-4 h-4"></i>Crew Members</div></div>
+      <div class="glass rounded-2xl p-5"><div class="font-game text-3xl text-sea">24/7</div><div class="text-sm text-slate-400 mt-1 flex justify-center gap-2 items-center"><i data-lucide="mic" class="w-4 h-4"></i>Active Voice Channels</div></div>
+      <div class="glass rounded-2xl p-5"><div class="font-game text-3xl text-fire">Daily</div><div class="text-sm text-slate-400 mt-1 flex justify-center gap-2 items-center"><i data-lucide="shield" class="w-4 h-4"></i>Raid Carries</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-20 px-4 sm:px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-10 reveal">
+      <h2 class="font-game text-3xl sm:text-4xl font-extrabold">Crew <span class="grad-text">Perks</span></h2>
+      <p class="text-slate-400 mt-3">Pick a category to see what Nova Dynasty offers.</p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-2 mb-10" id="tabs">
+      <button class="tab active px-5 py-2 rounded-full glass text-sm font-semibold" data-filter="all">All Perks</button>
+      <button class="tab px-5 py-2 rounded-full glass text-sm font-semibold" data-filter="combat">Combat</button>
+      <button class="tab px-5 py-2 rounded-full glass text-sm font-semibold" data-filter="trade">Trading</button>
+      <button class="tab px-5 py-2 rounded-full glass text-sm font-semibold" data-filter="social">Social</button>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" id="perkGrid">
+      <article class="perk glass rounded-2xl p-6 reveal" data-cat="combat">
+        <div class="w-12 h-12 rounded-xl bg-nova/20 flex items-center justify-center mb-4"><i data-lucide="flame" class="text-nova"></i></div>
+        <h3 class="font-game text-lg mb-2">Raid &amp; Fragment Carries</h3>
+        <p class="text-sm text-slate-400">Buddha, Dough and Phoenix awakening runs with experienced raid leads. Grind fragments without grinding alone.</p>
+      </article>
+      <article class="perk glass rounded-2xl p-6 reveal" data-cat="trade">
+        <div class="w-12 h-12 rounded-xl bg-sea/20 flex items-center justify-center mb-4"><i data-lucide="repeat" class="text-sea"></i></div>
+        <h3 class="font-game text-lg mb-2">Value Trade Hub</h3>
+        <p class="text-sm text-slate-400">Verified safe trade channels, middleman support and fruit stock alerts so you never miss a restock.</p>
+      </article>
+      <article class="perk glass rounded-2xl p-6 reveal" data-cat="social">
+        <div class="w-12 h-12 rounded-xl bg-fire/20 flex items-center justify-center mb-4"><i data-lucide="trophy" class="text-fire"></i></div>
+        <h3 class="font-game text-lg mb-2">Crew Battles &amp; Events</h3>
+        <p class="text-sm text-slate-400">Private server links, giveaways and PvP tournaments with prizes for the top crews.</p>
+      </article>
+      <article class="perk glass rounded-2xl p-6 reveal" data-cat="social combat">
+        <div class="w-12 h-12 rounded-xl bg-nova/20 flex items-center justify-center mb-4"><i data-lucide="gamepad-2" class="text-nova"></i></div>
+        <h3 class="font-game text-lg mb-2">Multi-Gaming Zone</h3>
+        <p class="text-sm text-slate-400">BedWars, Blade Ball, Rivals and general Roblox hangouts. Find a squad for any game, any time.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Trading tool -->
+<section id="trading" class="py-20 px-4 sm:px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-10 reveal">
+      <h2 class="font-game text-3xl sm:text-4xl font-extrabold">Fruit <span class="grad-text">Trading Preview</span></h2>
+      <p class="text-slate-400 mt-3 max-w-2xl mx-auto">A quick taste of our trade tools. Values below are sample numbers for demo purposes; check the Discord for live values.</p>
+    </div>
+    <div class="grid lg:grid-cols-5 gap-6">
+      <div class="glass rounded-2xl p-6 lg:col-span-3 reveal">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+          <h3 class="font-game flex items-center gap-2"><i data-lucide="trending-up" class="text-sea"></i>Popular Fruit Values</h3>
+          <div class="flex gap-2 text-xs" id="rarityFilter">
+            <button class="rf px-3 py-1 rounded-full glass" data-r="all">All</button>
+            <button class="rf px-3 py-1 rounded-full glass" data-r="Mythical">Mythical</button>
+            <button class="rf px-3 py-1 rounded-full glass" data-r="Legendary">Legendary</button>
+          </div>
+        </div>
+        <div id="fruitList" class="space-y-3"></div>
+      </div>
+      <div class="glass rounded-2xl p-6 lg:col-span-2 reveal">
+        <h3 class="font-game flex items-center gap-2 mb-5"><i data-lucide="scale" class="text-fire"></i>Offer Checker</h3>
+        <label class="text-xs text-slate-400">You give</label>
+        <select id="giveSel" class="w-full mt-1 mb-4 bg-base border border-nova/30 rounded-lg p-3 text-sm focus:outline-none focus:border-sea"></select>
+        <label class="text-xs text-slate-400">You receive</label>
+        <select id="getSel" class="w-full mt-1 mb-5 bg-base border border-nova/30 rounded-lg p-3 text-sm focus:outline-none focus:border-sea"></select>
+        <div id="verdict" class="rounded-xl p-4 text-center text-sm border border-white/10"></div>
+        <p class="text-xs text-slate-500 mt-4 flex gap-2"><i data-lucide="lightbulb" class="w-4 h-4 text-fire shrink-0"></i>Tip: always use in-server middlemen for high-value trades.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Rules -->
+<section id="rules" class="py-20 px-4 sm:px-6">
+  <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-10 reveal">
+      <h2 class="font-game text-3xl sm:text-4xl font-extrabold">Server <span class="grad-text">Rules</span></h2>
+      <p class="text-slate-400 mt-3">Keep the crew safe, fair and fun.</p>
+    </div>
+    <div class="space-y-4 reveal">
+      <div class="acc-item glass rounded-2xl">
+        <button class="acc-btn w-full flex items-center justify-between gap-4 p-5 text-left font-semibold"><span class="flex items-center gap-3"><i data-lucide="ban" class="text-red-400"></i>No Scamming</span><i data-lucide="chevron-down" class="chev"></i></button>
+        <div class="acc-body"><p class="px-5 pb-5 text-sm text-slate-400">Tricking, baiting or misleading members in trades is an instant ban. Use official middlemen and report suspicious users to staff.</p></div>
+      </div>
+      <div class="acc-item glass rounded-2xl">
+        <button class="acc-btn w-full flex items-center justify-between gap-4 p-5 text-left font-semibold"><span class="flex items-center gap-3"><i data-lucide="heart-handshake" class="text-nova"></i>Respect Crew Mates</span><i data-lucide="chevron-down" class="chev"></i></button>
+        <div class="acc-body"><p class="px-5 pb-5 text-sm text-slate-400">No harassment, hate speech or toxicity. Win with skill, lose with grace, and help newer players learn.</p></div>
+      </div>
+      <div class="acc-item glass rounded-2xl">
+        <button class="acc-btn w-full flex items-center justify-between gap-4 p-5 text-left font-semibold"><span class="flex items-center gap-3"><i data-lucide="shield-alert" class="text-fire"></i>No Cross-Trading</span><i data-lucide="chevron-down" class="chev"></i></button>
+        <div class="acc-body"><p class="px-5 pb-5 text-sm text-slate-400">Trading Roblox items for real money, other games' items or accounts is not allowed, as it breaks Roblox's Terms of Use.</p></div>
+      </div>
+      <div class="acc-item glass rounded-2xl">
+        <button class="acc-btn w-full flex items-center justify-between gap-4 p-5 text-left font-semibold"><span class="flex items-center gap-3"><i data-lucide="message-square-off" class="text-sea"></i>Spam Prevention</span><i data-lucide="chevron-down" class="chev"></i></button>
+        <div class="acc-body"><p class="px-5 pb-5 text-sm text-slate-400">No repeated messages, mass pings, unsolicited advertising or invite links. Keep each topic in its proper channel.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Staff -->
+<section id="staff" class="py-20 px-4 sm:px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-10 reveal">
+      <h2 class="font-game text-3xl sm:text-4xl font-extrabold">Meet the <span class="grad-text">Staff</span></h2>
+      <p class="text-slate-400 mt-3">The captains steering Nova Dynasty.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="glass rounded-2xl p-6 text-center reveal">
+        <div class="relative w-20 h-20 mx-auto mb-4"><div class="w-20 h-20 rounded-full bg-gradient-to-br from-nova to-sea flex items-center justify-center font-game text-2xl">N</div><span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-400 border-2 border-base"></span></div>
+        <h3 class="font-game">NovaKing</h3><p class="text-fire text-sm font-semibold">Server Owner</p><p class="text-xs text-slate-500 mt-1">Online</p>
+      </div>
+      <div class="glass rounded-2xl p-6 text-center reveal">
+        <div class="relative w-20 h-20 mx-auto mb-4"><div class="w-20 h-20 rounded-full bg-gradient-to-br from-sea to-nova flex items-center justify-center font-game text-2xl">A</div><span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-400 border-2 border-base"></span></div>
+        <h3 class="font-game">AquaBlade</h3><p class="text-sea text-sm font-semibold">Crew Captain</p><p class="text-xs text-slate-500 mt-1">Online</p>
+      </div>
+      <div class="glass rounded-2xl p-6 text-center reveal">
+        <div class="relative w-20 h-20 mx-auto mb-4"><div class="w-20 h-20 rounded-full bg-gradient-to-br from-fire to-nova flex items-center justify-center font-game text-2xl">P</div><span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-yellow-400 border-2 border-base"></span></div>
+        <h3 class="font-game">PhoenixRise</h3><p class="text-nova text-sm font-semibold">Raid Lead</p><p class="text-xs text-slate-500 mt-1">Idle</p>
+      </div>
+      <div class="glass rounded-2xl p-6 text-center reveal">
+        <div class="relative w-20 h-20 mx-auto mb-4"><div class="w-20 h-20 rounded-full bg-gradient-to-br from-nova to-fire flex items-center justify-center font-game text-2xl">D</div><span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-red-500 border-2 border-base"></span></div>
+        <h3 class="font-game">DoughMaster</h3><p class="text-nova text-sm font-semibold">Raid Lead</p><p class="text-xs text-slate-500 mt-1">Do Not Disturb</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-20 px-4 sm:px-6">
+  <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-10 reveal">
+      <h2 class="font-game text-3xl sm:text-4xl font-extrabold">Frequently Asked <span class="grad-text">Questions</span></h2>
+    </div>
+    <div class="space-y-4 reveal">
+      <div class="acc-item glass rounded-2xl">
+        <button class="acc-btn w-full flex items-center justify-between gap-4 p-5 text-left font-semibold"><span>How do I join the Blox Fruits crew?</span><i data-lucide="chevron-down" class="chev shrink-0"></i></button>
+        <div class="acc-body"><p class="px-5 pb-5 text-sm text-slate-400">Join the Discord, read the rules, then pick your crew role in the onboarding channel. A captain will welcome you in.</p></div>
+      </div>
+      <div class="acc-item glass rounded-2xl">
+        <button class="acc-btn w-full flex items-center justify-between gap-4 p-5 text-left font-semibold"><span>Are private servers free for members?</span><i data-lucide="chevron-down" class="chev shrink-0"></i></button>
+        <div class="acc-body"><p class="px-5 pb-5 text-sm text-slate-400">Yes. Active members get access to community private server links at no cost, shared during events and in the members channel.</p></div>
+      </div>
+      <div class="acc-item glass rounded-2xl">
+        <button class="acc-btn w-full flex items-center justify-between gap-4 p-5 text-left font-semibold"><span>How do I request raid carries?</span><i data-lucide="chevron-down" class="chev shrink-0"></i></button>
+        <div class="acc-body"><p class="px-5 pb-5 text-sm text-slate-400">Head to the carry-requests channel, post your level, the raid type and your Roblox username. A Raid Lead will pair you with a team.</p></div>
+      </div>
+      <div class="acc-item glass rounded-2xl">
+        <button class="acc-btn w-full flex items-center justify-between gap-4 p-5 text-left font-semibold"><span>Can I play other Roblox games here?</span><i data-lucide="chevron-down" class="chev shrink-0"></i></button>
+        <div class="acc-body"><p class="px-5 pb-5 text-sm text-slate-400">Absolutely. We have dedicated lobbies for BedWars, Blade Ball, Rivals and more.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-16 px-4 sm:px-6">
+  <div class="max-w-4xl mx-auto glass rounded-3xl p-10 text-center">
+    <h2 class="font-game text-2xl sm:text-4xl font-extrabold mb-4">Ready to set <span class="grad-text">sail</span>?</h2>
+    <p class="text-slate-400 mb-6">Your crew is waiting. Jump in and claim your spot.</p>
+    <a href="https://discord.gg/novadynasty" target="_blank" rel="noopener" class="pulse-glow inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-nova to-sea font-bold text-white hover:scale-105 transition"><i data-lucide="rocket" class="w-5 h-5"></i>Join Nova Dynasty</a>
+  </div>
+</section>
+</main>
+
+<!-- Footer -->
+<footer class="relative z-10 border-t border-white/10 mt-10 py-10 px-4 sm:px-6">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+    <div>
+      <div class="font-game font-extrabold text-xl grad-text">Nova Dynasty</div>
+      <p class="text-xs text-slate-500 mt-2">&copy; <span id="yr"></span> Nova Dynasty. All rights reserved.</p>
+      <p class="text-xs text-slate-500 mt-1 max-w-md">Not affiliated with Roblox Corporation or Gamer Robot Inc. Blox Fruits is a trademark of its respective owners.</p>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="https://discord.gg/novadynasty" target="_blank" rel="noopener" aria-label="Discord" class="p-3 glass rounded-full"><i data-lucide="message-circle" class="w-5 h-5 text-nova"></i></a>
+      <a href="#" aria-label="YouTube" class="p-3 glass rounded-full"><i data-lucide="youtube" class="w-5 h-5 text-red-400"></i></a>
+      <a href="#" aria-label="Twitter" class="p-3 glass rounded-full"><i data-lucide="twitter" class="w-5 h-5 text-sea"></i></a>
+      <button data-copy aria-label="Copy invite" class="p-3 glass rounded-full"><i data-lucide="link" class="w-5 h-5 text-fire"></i></button>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] glass rounded-xl px-5 py-3 flex items-center gap-3 text-sm opacity-0 translate-y-6 pointer-events-none transition-all duration-300" role="status" aria-live="polite" style="background:rgba(11,14,20,.92)">
+  <i data-lucide="check-circle-2" class="text-emerald-400 w-5 h-5"></i><span>Invite link copied to clipboard!</span>
+</div>
+
+<script>
+const INVITE = 'https://discord.gg/novadynasty'; // <-- replace with your real invite
+
+// Icons
+lucide.createIcons();
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// Mobile menu
+const mm = document.getElementById('mobileMenu');
+document.getElementById('menuBtn').onclick = () => mm.classList.toggle('hidden');
+mm.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mm.classList.add('hidden')));
+
+// Navbar background on scroll
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => {
+  nav.style.background = scrollY > 20 ? 'rgba(11,14,20,.85)' : 'transparent';
+  nav.style.backdropFilter = scrollY > 20 ? 'blur(12px)' : 'none';
+  nav.style.borderBottom = scrollY > 20 ? '1px solid rgba(168,85,247,.2)' : 'none';
+});
+
+// Toast + copy invite
+const toast = document.getElementById('toast');
+let toastTimer;
+function showToast(msg) {
+  toast.querySelector('span').textContent = msg;
+  toast.classList.remove('opacity-0', 'translate-y-6');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.add('opacity-0', 'translate-y-6'), 2600);
+}
+async function copyInvite() {
+  try {
+    await navigator.clipboard.writeText(INVITE);
+  } catch (e) {
+    const t = document.createElement('textarea');
+    t.value = INVITE; document.body.appendChild(t); t.select();
+    try { document.execCommand('copy'); } catch (_) {}
+    t.remove();
+  }
+  showToast('Invite link copied to clipboard!');
+}
+document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', copyInvite));
+
+// Accordions (independent per section: one open at a time within each group)
+document.querySelectorAll('.acc-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.acc-item');
+    const group = item.parentElement;
+    const wasOpen = item.classList.contains('open');
+    group.querySelectorAll('.acc-item.open').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+// Perk filter tabs
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const f = tab.dataset.filter;
+    document.querySelectorAll('.perk').forEach(c => {
+      const match = f === 'all' || c.dataset.cat.split(' ').includes(f);
+      c.classList.toggle('card-hide', !match);
+    });
+  });
+});
+
+// Fruit data (sample values for demo)
+const fruits = [
+  { n: 'Dragon',   r: 'Mythical',  v: 2800, t: 'up',   c: 'text-fire' },
+  { n: 'Leopard',  r: 'Mythical',  v: 2600, t: 'flat', c: 'text-fire' },
+  { n: 'Kitsune',  r: 'Mythical',  v: 3000, t: 'up',   c: 'text-fire' },
+  { n: 'Dough',    r: 'Mythical',  v: 1900, t: 'down', c: 'text-fire' },
+  { n: 'Buddha',   r: 'Legendary', v: 1200, t: 'flat', c: 'text-nova' },
+  { n: 'Phoenix',  r: 'Legendary', v: 1000, t: 'up',   c: 'text-nova' },
+  { n: 'Venom',    r: 'Legendary', v: 900,  t: 'down', c: 'text-nova' }
+];
+const icons = { up: ['trending-up', 'text-emerald-400'], down: ['trending-down', 'text-red-400'], flat: ['minus', 'text-slate-400'] };
+const list = document.getElementById('fruitList');
+function renderFruits(rar = 'all') {
+  list.innerHTML = fruits.filter(f => rar === 'all' || f.r === rar).map(f => `
+    <div class="flex items-center justify-between rounded-xl bg-white/5 border border-white/5 hover:border-sea/40 transition p-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-base flex items-center justify-center"><i data-lucide="gem" class="${f.c} w-5 h-5"></i></div>
+        <div><div class="font-semibold text-sm">${f.n}</div><div class="text-xs ${f.c}">${f.r}</div></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="font-game text-sm">${f.v.toLocaleString()}</span>
+        <i data-lucide="${icons[f.t][0]}" class="w-4 h-4 ${icons[f.t][1]}"></i>
+      </div>
+    </div>`).join('');
+  lucide.createIcons();
+}
+renderFruits();
+document.querySelectorAll('.rf').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.rf').forEach(x => x.classList.remove('bg-nova/40'));
+  b.classList.add('bg-nova/40');
+  renderFruits(b.dataset.r);
+}));
+
+// Offer checker
+const giveSel = document.getElementById('giveSel');
+const getSel = document.getElementById('getSel');
+const verdict = document.getElementById('verdict');
+const opts = fruits.map(f => `<option value="${f.v}">${f.n} (${f.v.toLocaleString()})</option>`).join('');
+giveSel.innerHTML = opts; getSel.innerHTML = opts;
+giveSel.selectedIndex = 3; getSel.selectedIndex = 1;
+function checkOffer() {
+  const give = +giveSel.value, get = +getSel.value;
+  const diff = ((get - give) / give) * 100;
+  let msg, cls;
+  if (Math.abs(diff) <= 8) { msg = 'Fair trade. Both sides are close in value.'; cls = 'text-sea'; }
+  else if (diff > 0) { msg = `Win for you: +${diff.toFixed(0)}% value. Expect a counter.`; cls = 'text-emerald-400'; }
+  else { msg = `Loss for you: ${diff.toFixed(0)}% value. Ask for an add-on.`; cls = 'text-red-400'; }
+  verdict.className = `rounded-xl p-4 text-center text-sm border border-white/10 ${cls}`;
+  verdict.textContent = msg;
+}
+giveSel.onchange = getSel.onchange = checkOffer;
+checkOffer();
+
+// Stat counter
+const counter = document.querySelector('[data-count]');
+let counted = false;
+function runCount() {
+  if (counted) return; counted = true;
+  const target = +counter.dataset.count; let cur = 0;
+  const step = Math.ceil(target / 60);
+  const id = setInterval(() => {
+    cur = Math.min(cur + step, target);
+    counter.textContent = cur.toLocaleString();
+    if (cur >= target) clearInterval(id);
+  }, 25);
+}
+
+// Reveal on scroll
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); }
+}), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { runCount(); o.disconnect(); } }).observe(counter);
+setTimeout(runCount, 800);
+</script>
+</body>
+</html>
